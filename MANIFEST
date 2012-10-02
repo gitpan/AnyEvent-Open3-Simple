@@ -8,6 +8,7 @@ dist.ini
 lib/AnyEvent/Open3/Simple.pm
 lib/AnyEvent/Open3/Simple/Process.pm
 t/create.t
+t/defect_gh1.t
 t/on_error.t
 t/on_error_mock.t
 t/on_fail.t

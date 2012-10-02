@@ -20,6 +20,7 @@ name: AnyEvent-Open3-Simple
 requires:
   AnyEvent: 0
   IPC::Open3: 0
+  Scalar::Util: 0
   Symbol: 0
   perl: v5.10.0
   strict: 0
@@ -28,4 +29,4 @@ resources:
   bugtracker: https://github.com/plicease/AnyEvent-Open3-Simple/issues
   homepage: http://search.cpan.org/dist/AnyEvent-Open3-Simple/
   repository: git://github.com/plicease/AnyEvent-Open3-Simple.git
-version: 0.3
+version: 0.4

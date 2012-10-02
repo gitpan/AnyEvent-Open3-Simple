@@ -5,18 +5,19 @@ use warnings;
 use v5.10;
 use AnyEvent;
 use IPC::Open3 qw( open3 );
+use Scalar::Util qw( reftype );
 use Symbol qw( gensym );
 use AnyEvent::Open3::Simple::Process;
 
 # ABSTRACT: interface to open3 under AnyEvent
-# VERSION
+our $VERSION = '0.4'; # VERSION
 
 
 sub new
 {
   state $default_handler = sub { };
   my $class = shift;
-  my $args = ref $_[0] eq 'HSAH' ? shift : { @_ };
+  my $args = (reftype($_[0]) // '') eq 'HASH' ? shift : { @_ };
   my %self;
   $self{$_} = $args->{$_} // $default_handler for qw( on_stdout on_stderr on_start on_exit on_signal on_fail on_error );
   bless \%self, $class;
@@ -117,7 +118,7 @@ AnyEvent::Open3::Simple - interface to open3 under AnyEvent
 
 =head1 VERSION
 
-version 0.3
+version 0.4
 
 =head1 SYNOPSIS
 

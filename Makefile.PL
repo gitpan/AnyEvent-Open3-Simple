@@ -12,9 +12,11 @@ my %WriteMakefileArgs = (
   "ABSTRACT" => "interface to open3 under AnyEvent",
   "AUTHOR" => "Graham Ollis <plicease\@wdlabs.com>",
   "BUILD_REQUIRES" => {
+    "Exporter" => 0,
     "File::Spec" => 0,
     "File::Temp" => 0,
-    "Test::More" => 0
+    "Test::More" => 0,
+    "base" => 0
   },
   "CONFIGURE_REQUIRES" => {
     "ExtUtils::MakeMaker" => "6.30"
@@ -30,7 +32,7 @@ my %WriteMakefileArgs = (
     "strict" => 0,
     "warnings" => 0
   },
-  "VERSION" => "0.2",
+  "VERSION" => "0.3",
   "test" => {
     "TESTS" => "t/*.t"
   }

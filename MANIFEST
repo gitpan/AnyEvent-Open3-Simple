@@ -9,6 +9,7 @@ lib/AnyEvent/Open3/Simple.pm
 lib/AnyEvent/Open3/Simple/Process.pm
 t/create.t
 t/on_error.t
+t/on_error_mock.t
 t/on_fail.t
 t/on_out.t
 t/on_signal.t

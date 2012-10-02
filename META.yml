@@ -3,9 +3,11 @@ abstract: 'interface to open3 under AnyEvent'
 author:
   - 'Graham Ollis <plicease@wdlabs.com>'
 build_requires:
+  Exporter: 0
   File::Spec: 0
   File::Temp: 0
   Test::More: 0
+  base: 0
 configure_requires:
   ExtUtils::MakeMaker: 6.30
 dynamic_config: 0
@@ -26,4 +28,4 @@ resources:
   bugtracker: https://github.com/plicease/AnyEvent-Open3-Simple/issues
   homepage: http://search.cpan.org/dist/AnyEvent-Open3-Simple/
   repository: git://github.com/plicease/AnyEvent-Open3-Simple.git
-version: 0.2
+version: 0.3

@@ -2,7 +2,7 @@ NAME
     AnyEvent::Open3::Simple - interface to open3 under AnyEvent
 
 VERSION
-    version 0.2
+    version 0.3
 
 SYNOPSIS
      use v5.10;
@@ -86,6 +86,9 @@ CONSTRUCTOR
         thrown by IPC::Open3 (typically a string which begins with "open3:
         ...").
 
+        In some environments open3 is unable to detect exec errors in the
+        child.
+
 METHODS
   $ipc->run($program, @arguments)
     Start the given program with the given arguments. Returns immediately.
@@ -100,6 +103,9 @@ CAVEATS
     This module is not supported under Windows (MSWin32), but it does seem
     to work under Cygwin (cygwin). Patches are welcome for any platforms
     that don't work.
+
+    There are some traps for the unwary relating to buffers and deadlocks,
+    IPC::Open3 is recommended reading.
 
 SEE ALSO
     AnyEvent::Subprocess, AnyEvent::Util, AnyEvent::Run.

@@ -117,7 +117,7 @@ AnyEvent::Open3::Simple - interface to open3 under AnyEvent
 
 =head1 VERSION
 
-version 0.2
+version 0.3
 
 =head1 SYNOPSIS
 
@@ -206,6 +206,9 @@ because the process failed to create.  The error passed in is
 the error thrown by L<IPC::Open3> (typically a string which begins
 with "open3: ...").
 
+In some environments open3 is unable to detect exec errors in the
+child.
+
 =back
 
 =head1 METHODS
@@ -227,11 +230,12 @@ This module is not supported under Windows (MSWin32), but it does seem
 to work under Cygwin (cygwin).  Patches are welcome for any platforms
 that don't work.
 
+There are some traps for the unwary relating to buffers and deadlocks,
+L<IPC::Open3> is recommended reading.
+
 =head1 SEE ALSO
 
 L<AnyEvent::Subprocess>, L<AnyEvent::Util>, L<AnyEvent::Run>.
-
-=cut
 
 =head1 AUTHOR
 

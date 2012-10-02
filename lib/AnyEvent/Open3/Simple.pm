@@ -10,7 +10,7 @@ use Symbol qw( gensym );
 use AnyEvent::Open3::Simple::Process;
 
 # ABSTRACT: interface to open3 under AnyEvent
-our $VERSION = '0.4'; # VERSION
+our $VERSION = '0.5'; # VERSION
 
 
 sub new
@@ -118,7 +118,7 @@ AnyEvent::Open3::Simple - interface to open3 under AnyEvent
 
 =head1 VERSION
 
-version 0.4
+version 0.5
 
 =head1 SYNOPSIS
 
@@ -128,7 +128,7 @@ version 0.4
  
  my $done = AnyEvent->condvar;
  
- my $ipc = AnyEvent::Open3::Simple(
+ my $ipc = AnyEvent::Open3::Simple->new(
    on_stdout => sub { say 'out: ', pop },
    on_stderr => sub { say 'err: ', pop },
    on_exit   => sub {
@@ -158,18 +158,20 @@ interfaces that may be more or less appropriate.
 
 =head1 CONSTRUCTOR
 
-Constructor takes a hash or hashref of event callbacks.  These events
-will be triggered by the subprocess when the run method is called.
-Each even callback (except on_error) gets passed in an instance of 
-L<AnyEvent::Open3::Simple::Process> as its first argument which can be
-used to get the PID of the subprocess, or to write to it.  on_error
-does not get a process object because it indicates an error in the 
-creation of the process.
+Constructor takes a hash or hashref of event callbacks.
 
 =head2 EVENTS
 
+These events will be triggered by the subprocess when the run method is 
+called. Each event callback (except on_error) gets passed in an 
+instance of L<AnyEvent::Open3::Simple::Process> as its first argument 
+which can be used to get the PID of the subprocess, or to write to it.  
+on_error does not get a process object because it indicates an error in 
+the creation of the process.
+
 Not all of these events will fire depending on the execution of the 
-child process.
+child process.  In the very least exactly one of on_start or on_error
+will be called.
 
 =over 4
 
@@ -177,6 +179,18 @@ child process.
 
 Called after the process is created, but before the run method returns
 (that is, it does not wait to re-enter the event loop first).
+
+=item * on_error ($error)
+
+Called when there is an execution error, for example, if you ask
+to run a program that does not exist.  No process is passed in
+because the process failed to create.  The error passed in is 
+the error thrown by L<IPC::Open3> (typically a string which begins
+with "open3: ...").
+
+In some environments open3 is unable to detect exec errors in the
+child, so you may not be able to rely on this event.  It does 
+seem to work consistently on Perl 5.14 or better though.
 
 =item * on_stdout ($proc, $line)
 
@@ -198,17 +212,6 @@ Called when the processes is terminated by a signal.
 =item * on_fail ($proc, $exit_value)
 
 Called when the process returns a non-zero exit value.
-
-=item * on_error ($error)
-
-Called when there is an execution error, for example, if you ask
-to run a program that does not exist.  No process is passed in
-because the process failed to create.  The error passed in is 
-the error thrown by L<IPC::Open3> (typically a string which begins
-with "open3: ...").
-
-In some environments open3 is unable to detect exec errors in the
-child.
 
 =back
 

@@ -24,5 +24,6 @@ requires:
   warnings: 0
 resources:
   bugtracker: https://github.com/plicease/AnyEvent-Open3-Simple/issues
+  homepage: http://search.cpan.org/dist/AnyEvent-Open3-Simple/
   repository: git://github.com/plicease/AnyEvent-Open3-Simple.git
-version: 0.1
+version: 0.2

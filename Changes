@@ -1,4 +1,7 @@
 Revision history for AnyEvent-Open3-Simple
 
+0.2       2012-10-02 09:16:57 EST5EDT
+  - disabled unreliable test
+
 0.1       2012-10-02 01:20:45 EST5EDT
   - initial version

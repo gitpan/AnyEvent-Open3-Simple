@@ -1,0 +1,115 @@
+NAME
+    AnyEvent::Open3::Simple - interface to open3 under AnyEvent
+
+VERSION
+    version 0.1
+
+SYNOPSIS
+     use v5.10;
+     use AnyEvent;
+     use AnyEvent::Open3::Simple;
+ 
+     my $done = AnyEvent->condvar;
+ 
+     my $ipc = AnyEvent::Open3::Simple(
+       on_stdout => sub { say 'out: ', pop },
+       on_stderr => sub { say 'err: ', pop },
+       on_exit   => sub {
+         my($proc, $exit_value, $signal) = @_;
+         say 'exit value: ', $exit_value;
+         say 'signal:     ', $signal;
+         $done->send;
+       },
+     );
+ 
+     $ipc->run('echo', 'hello there');
+ 
+     $done->recv;
+
+DESCRIPTION
+    This module provides an interface to open3 while running under AnyEvent
+    that delivers data from stdout and stderr as lines are written by the
+    subprocess. The interface is reminiscent of IPC::Open3::Simple, although
+    this module does provides a somewhat different API, so it cannot be used
+    a drop in replacement for that module.
+
+    There are already a number of interfaces for interacting with
+    subprocesses in the context of AnyEvent, but this one is the most
+    convenient for my usage. Note the modules listed in the SEE ALSO section
+    below for other interfaces that may be more or less appropriate.
+
+CONSTRUCTOR
+    Constructor takes a hash or hashref of event callbacks. These events
+    will be triggered by the subprocess when the run method is called. Each
+    even callback (except on_error) gets passed in an instance of
+    AnyEvent::Open3::Simple::Process as its first argument which can be used
+    to get the PID of the subprocess, or to write to it. on_error does not
+    get a process object because it indicates an error in the creation of
+    the process.
+
+  EVENTS
+    Not all of these events will fire depending on the execution of the
+    child process.
+
+    *   on_start ($proc)
+
+        Called after the process is created, but before the run method
+        returns (that is, it does not wait to re-enter the event loop
+        first).
+
+    *   on_stdout ($proc, $line)
+
+        Called on every line printed to stdout by the child process.
+
+    *   on_stderr ($proc, $line)
+
+        Called on every line printed to stderr by the child process.
+
+    *   on_exit ($proc, $exit_value, $signal)
+
+        Called when the processes completes, either because it called exit,
+        or if it was killed by a signal.
+
+    *   on_signal ($proc, $signal)
+
+        Called when the processes is terminated by a signal.
+
+    *   on_fail ($proc, $exit_value)
+
+        Called when the process returns a non-zero exit value.
+
+    *   on_error ($error)
+
+        Called when there is an execution error, for example, if you ask to
+        run a program that does not exist. No process is passed in because
+        the process failed to create. The error passed in is the error
+        thrown by IPC::Open3 (typically a string which begins with "open3:
+        ...").
+
+METHODS
+  $ipc->run($program, @arguments)
+    Start the given program with the given arguments. Returns immediately.
+    Any events that have been specified in the constructor (except for
+    on_start) will not be called until the process re-enters the event loop.
+
+CAVEATS
+    Some AnyEvent implementations may not work properly with the method used
+    by AnyEvent::Open3::Simple to wait for the child process to terminate.
+    See "CHILD-PROCESS-WATCHERS" in AnyEvent for details.
+
+    This module is not supported under Windows (MSWin32), but it does seem
+    to work under Cygwin (cygwin). Patches are welcome for any platforms
+    that don't work.
+
+SEE ALSO
+    AnyEvent::Subprocess, AnyEvent::Util, AnyEvent::Run.
+
+AUTHOR
+    Graham Ollis <plicease@wdlabs.com>
+
+COPYRIGHT AND LICENSE
+    This software is copyright (c) 2012 by Graham Ollis.
+
+    This is free software; you can redistribute it and/or modify it under
+    the same terms as the Perl 5 programming language system itself.
+

@@ -17,6 +17,7 @@ t/on_signal.t
 t/print.t
 t/proc.t
 t/use.t
+xt/release/build_environment.t
 xt/release/changes.t
 xt/release/eol.t
 xt/release/fixme.t

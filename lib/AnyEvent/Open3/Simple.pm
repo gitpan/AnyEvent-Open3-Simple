@@ -10,7 +10,7 @@ use Symbol qw( gensym );
 use AnyEvent::Open3::Simple::Process;
 
 # ABSTRACT: interface to open3 under AnyEvent
-our $VERSION = '0.5'; # VERSION
+our $VERSION = '0.6'; # VERSION
 
 
 sub new
@@ -72,7 +72,7 @@ sub run
       my($pid, $status) = @_;
       my($exit_value, $signal) = ($status >> 8, $status & 127);
       
-      $child_stdin->close;
+      $proc->close;
       
       # make sure we consume any stdout and stderr which hasn't
       # been consumed yet.  This seems to make on_out.t work on
@@ -118,7 +118,7 @@ AnyEvent::Open3::Simple - interface to open3 under AnyEvent
 
 =head1 VERSION
 
-version 0.5
+version 0.6
 
 =head1 SYNOPSIS
 
@@ -243,7 +243,7 @@ L<AnyEvent::Subprocess>, L<AnyEvent::Util>, L<AnyEvent::Run>.
 
 =head1 AUTHOR
 
-Graham Ollis <plicease@wdlabs.com>
+Graham Ollis <plicease@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 

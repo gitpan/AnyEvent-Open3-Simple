@@ -5,7 +5,7 @@ use warnings;
 use v5.10;
 
 # ABSTRACT: process run using AnyEvent::Open3::Simple
-our $VERSION = '0.5'; # VERSION
+our $VERSION = '0.6'; # VERSION
 
 
 sub new
@@ -20,7 +20,8 @@ sub pid { shift->{pid} }
 
 sub print
 {
-  shift->{stdin}->print(@_);
+  my $stdin = shift->{stdin};
+  print $stdin @_;
 }
 
 
@@ -32,7 +33,7 @@ sub say
 
 sub close
 {
-  shift->{stdin}->close;
+  CORE::close(shift->{stdin});
 }
 
 1;
@@ -46,7 +47,7 @@ AnyEvent::Open3::Simple::Process - process run using AnyEvent::Open3::Simple
 
 =head1 VERSION
 
-version 0.5
+version 0.6
 
 =head1 DESCRIPTION
 
@@ -72,7 +73,7 @@ Close the subprocess' stdin.
 
 =head1 AUTHOR
 
-Graham Ollis <plicease@wdlabs.com>
+Graham Ollis <plicease@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 

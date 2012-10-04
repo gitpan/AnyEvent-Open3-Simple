@@ -10,7 +10,7 @@ use ExtUtils::MakeMaker 6.30;
 
 my %WriteMakefileArgs = (
   "ABSTRACT" => "interface to open3 under AnyEvent",
-  "AUTHOR" => "Graham Ollis <plicease\@wdlabs.com>",
+  "AUTHOR" => "Graham Ollis <plicease\@cpan.org>",
   "BUILD_REQUIRES" => {
     "Exporter" => 0,
     "File::Spec" => 0,
@@ -33,7 +33,7 @@ my %WriteMakefileArgs = (
     "strict" => 0,
     "warnings" => 0
   },
-  "VERSION" => "0.5",
+  "VERSION" => "0.6",
   "test" => {
     "TESTS" => "t/*.t"
   }

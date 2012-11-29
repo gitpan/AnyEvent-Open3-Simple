@@ -2,7 +2,7 @@ NAME
     AnyEvent::Open3::Simple - interface to open3 under AnyEvent
 
 VERSION
-    version 0.6
+    version 0.61
 
 SYNOPSIS
      use v5.10;
@@ -103,9 +103,9 @@ CAVEATS
     by AnyEvent::Open3::Simple to wait for the child process to terminate.
     See "CHILD-PROCESS-WATCHERS" in AnyEvent for details.
 
-    This module is not supported under Windows (MSWin32), but it does seem
-    to work under Cygwin (cygwin). Patches are welcome for any platforms
-    that don't work.
+    This module is not supported under Windows ($^O eq 'MSWin32'), but it
+    does seem to work under Cygwin ($^O eq 'cygwin'). Patches are welcome
+    for any platforms that don't work.
 
     There are some traps for the unwary relating to buffers and deadlocks,
     IPC::Open3 is recommended reading.

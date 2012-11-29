@@ -12,11 +12,7 @@ my %WriteMakefileArgs = (
   "ABSTRACT" => "interface to open3 under AnyEvent",
   "AUTHOR" => "Graham Ollis <plicease\@cpan.org>",
   "BUILD_REQUIRES" => {
-    "Exporter" => 0,
-    "File::Spec" => 0,
-    "File::Temp" => 0,
-    "Test::More" => 0,
-    "base" => 0
+    "Test::More" => 0
   },
   "CONFIGURE_REQUIRES" => {
     "ExtUtils::MakeMaker" => "6.30"
@@ -26,14 +22,9 @@ my %WriteMakefileArgs = (
   "LICENSE" => "perl",
   "NAME" => "AnyEvent::Open3::Simple",
   "PREREQ_PM" => {
-    "AnyEvent" => 0,
-    "IPC::Open3" => 0,
-    "Scalar::Util" => 0,
-    "Symbol" => 0,
-    "strict" => 0,
-    "warnings" => 0
+    "AnyEvent" => 0
   },
-  "VERSION" => "0.6",
+  "VERSION" => "0.61",
   "test" => {
     "TESTS" => "t/*.t"
   }

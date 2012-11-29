@@ -10,7 +10,7 @@ use Symbol qw( gensym );
 use AnyEvent::Open3::Simple::Process;
 
 # ABSTRACT: interface to open3 under AnyEvent
-our $VERSION = '0.6'; # VERSION
+our $VERSION = '0.61'; # VERSION
 
 
 sub new
@@ -108,8 +108,8 @@ sub run
 
 1;
 
-
 __END__
+
 =pod
 
 =head1 NAME
@@ -118,7 +118,7 @@ AnyEvent::Open3::Simple - interface to open3 under AnyEvent
 
 =head1 VERSION
 
-version 0.6
+version 0.61
 
 =head1 SYNOPSIS
 
@@ -230,9 +230,9 @@ Some AnyEvent implementations may not work properly with the method
 used by AnyEvent::Open3::Simple to wait for the child process to 
 terminate.  See L<AnyEvent/"CHILD-PROCESS-WATCHERS"> for details.
 
-This module is not supported under Windows (MSWin32), but it does seem
-to work under Cygwin (cygwin).  Patches are welcome for any platforms
-that don't work.
+This module is not supported under Windows ($^O eq 'MSWin32'), but it 
+does seem to work under Cygwin ($^O eq 'cygwin').  Patches are welcome 
+for any platforms that don't work.
 
 There are some traps for the unwary relating to buffers and deadlocks,
 L<IPC::Open3> is recommended reading.
@@ -253,4 +253,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-

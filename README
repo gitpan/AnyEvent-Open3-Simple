@@ -2,7 +2,7 @@ NAME
     AnyEvent::Open3::Simple - interface to open3 under AnyEvent
 
 VERSION
-    version 0.61
+    version 0.62
 
 SYNOPSIS
      use v5.10;

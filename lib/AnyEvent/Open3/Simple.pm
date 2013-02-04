@@ -10,7 +10,7 @@ use Symbol qw( gensym );
 use AnyEvent::Open3::Simple::Process;
 
 # ABSTRACT: interface to open3 under AnyEvent
-our $VERSION = '0.62'; # VERSION
+our $VERSION = '0.63'; # VERSION
 
 
 sub new
@@ -108,8 +108,8 @@ sub run
 
 1;
 
-
 __END__
+
 =pod
 
 =head1 NAME
@@ -118,7 +118,7 @@ AnyEvent::Open3::Simple - interface to open3 under AnyEvent
 
 =head1 VERSION
 
-version 0.62
+version 0.63
 
 =head1 SYNOPSIS
 
@@ -253,4 +253,3 @@ This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-

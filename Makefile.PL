@@ -24,7 +24,7 @@ my %WriteMakefileArgs = (
   "PREREQ_PM" => {
     "AnyEvent" => 0
   },
-  "VERSION" => "0.62",
+  "VERSION" => "0.63",
   "test" => {
     "TESTS" => "t/*.t"
   }

@@ -10,7 +10,7 @@ use Symbol qw( gensym );
 use AnyEvent::Open3::Simple::Process;
 
 # ABSTRACT: interface to open3 under AnyEvent
-our $VERSION = '0.64'; # VERSION
+our $VERSION = '0.65'; # VERSION
 
 
 sub new
@@ -118,7 +118,7 @@ AnyEvent::Open3::Simple - interface to open3 under AnyEvent
 
 =head1 VERSION
 
-version 0.64
+version 0.65
 
 =head1 SYNOPSIS
 
@@ -129,10 +129,24 @@ version 0.64
  my $done = AnyEvent->condvar;
  
  my $ipc = AnyEvent::Open3::Simple->new(
-   on_stdout => sub { say 'out: ', pop },
-   on_stderr => sub { say 'err: ', pop },
+   on_start => sub {
+     my $proc = shift; # isa AnyEvent::Open3::Simple::Process
+     say 'child PID: ', $proc->pid;
+   },
+   on_stdout => sub { 
+     my $proc = shift; # isa AnyEvent::Open3::Simple::Process
+     my $line = shift; # string
+     say 'out: ', $string;
+   },
+   on_stderr => sub {
+     my $proc = shift; # isa AnyEvent::Open3::Simple::Process
+     my $line = shift; # string
+     say 'err: ', $line;
+   },
    on_exit   => sub {
-     my($proc, $exit_value, $signal) = @_;
+     my $proc = shift;       # isa AnyEvent::Open3::Simple::Process
+     my $exit_value = shift; # integer
+     my $signal = shift;     # integer
      say 'exit value: ', $exit_value;
      say 'signal:     ', $signal;
      $done->send;
@@ -140,7 +154,6 @@ version 0.64
  );
  
  $ipc->run('echo', 'hello there');
- 
  $done->recv;
 
 =head1 DESCRIPTION

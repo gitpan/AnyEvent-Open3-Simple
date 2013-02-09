@@ -1,5 +1,8 @@
 Revision history for AnyEvent-Open3-Simple
 
+0.65      2013-02-09 17:10:56 America/New_York
+  - documentation updates
+
 0.64      2013-02-05 08:54:37 America/New_York
   - added timeout to proc.t
 

@@ -2,7 +2,7 @@ NAME
     AnyEvent::Open3::Simple - interface to open3 under AnyEvent
 
 VERSION
-    version 0.65
+    version 0.66
 
 SYNOPSIS
      use v5.10;
@@ -96,6 +96,11 @@ CONSTRUCTOR
 
         Called when the processes completes, either because it called exit,
         or if it was killed by a signal.
+
+    *   on_success ($proc)
+
+        Called when the process returns zero exit value and is not
+        terminated by a signal.
 
     *   on_signal ($proc, $signal)
 

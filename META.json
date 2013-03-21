@@ -4,7 +4,7 @@
       "Graham Ollis <plicease@cpan.org>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Dist::Zilla version 4.300030, CPAN::Meta::Converter version 2.120921",
+   "generated_by" : "Dist::Zilla version 4.300031, CPAN::Meta::Converter version 2.120921",
    "license" : [
       "perl_5"
    ],
@@ -33,12 +33,16 @@
    },
    "release_status" : "stable",
    "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/plicease/anyevent-open3-simple/issues"
+      },
+      "homepage" : "http://perl.wdlabs.com/AnyEvent-Open3-Simple/",
       "repository" : {
          "type" : "git",
-         "url" : "git://github.com/plicease/AnyEvent-Open3-Simple.git",
-         "web" : "https://github.com/plicease/AnyEvent-Open3-Simple"
+         "url" : "git://github.com/plicease/anyevent-open3-simple.git",
+         "web" : "https://github.com/plicease/anyevent-open3-simple"
       }
    },
-   "version" : "0.66"
+   "version" : "0.67"
 }
 

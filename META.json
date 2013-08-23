@@ -4,7 +4,7 @@
       "Graham Ollis <plicease@cpan.org>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Dist::Zilla version 4.300031, CPAN::Meta::Converter version 2.120921",
+   "generated_by" : "Dist::Zilla version 4.300035, CPAN::Meta::Converter version 2.132140",
    "license" : [
       "perl_5"
    ],
@@ -43,6 +43,6 @@
          "web" : "https://github.com/plicease/anyevent-open3-simple"
       }
    },
-   "version" : "0.67"
+   "version" : "0.68"
 }
 

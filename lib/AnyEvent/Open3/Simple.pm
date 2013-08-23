@@ -10,7 +10,7 @@ use Symbol qw( gensym );
 use AnyEvent::Open3::Simple::Process;
 
 # ABSTRACT: interface to open3 under AnyEvent
-our $VERSION = '0.67'; # VERSION
+our $VERSION = '0.68'; # VERSION
 
 
 sub new
@@ -119,7 +119,7 @@ AnyEvent::Open3::Simple - interface to open3 under AnyEvent
 
 =head1 VERSION
 
-version 0.67
+version 0.68
 
 =head1 SYNOPSIS
 
@@ -150,6 +150,11 @@ version 0.67
      my $signal = shift;     # integer
      say 'exit value: ', $exit_value;
      say 'signal:     ', $signal;
+     $done->send;
+   },
+   on_error => sub {
+     my $error = shift;      # the exception thrown by IPC::Open3::open3
+     warn "error: $error";
      $done->send;
    },
  );
@@ -255,9 +260,41 @@ for any platforms that don't work.
 There are some traps for the unwary relating to buffers and deadlocks,
 L<IPC::Open3> is recommended reading.
 
+If you register a call back for C<on_exit>, but not C<on_error> then
+use a condition variable to wait for the process to complete as in
+this:
+
+ my $cv = AnyEvent->condvar;
+ my $ipc = AnyEvent::Open3::Simple->new(
+   on_exit => sub { $cv->send },
+ );
+ $ipc->run('command_not_found');
+ $cv->recv;
+
+You might be waiting forever if there is an error starting the
+process (if for example you give it a bad command).  To handle
+this situation you might use croak on the condition variable
+in the event of error:
+
+ my $cv = AnyEvent->condvar;
+ my $ipc = AnyEvent::Open3::Simple->new(
+   on_exit => sub { $cv->send },
+   on_error => sub {
+     my $error = shift;
+     $cv->croak($error);
+   },
+ );
+ $ipc->run('command_not_found');
+ $cv->recv;
+
+This will cause the C<recv> to die, printing a useful diagnostic
+if the exception isn't caught somewhere else.
+
 =head1 SEE ALSO
 
 L<AnyEvent::Subprocess>, L<AnyEvent::Util>, L<AnyEvent::Run>.
+
+=cut
 
 =head1 AUTHOR
 

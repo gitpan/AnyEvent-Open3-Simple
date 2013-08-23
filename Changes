@@ -1,5 +1,8 @@
 Revision history for AnyEvent-Open3-Simple
 
+0.68      2013-08-23 08:38:40 -0400
+  - documentation tweaks
+
 0.67      2013-03-21 11:01:47 America/New_York
   - fix META.json,yml
 

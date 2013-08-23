@@ -5,7 +5,7 @@ use warnings;
 use v5.10;
 
 # ABSTRACT: process run using AnyEvent::Open3::Simple
-our $VERSION = '0.67'; # VERSION
+our $VERSION = '0.68'; # VERSION
 
 
 sub new
@@ -48,17 +48,19 @@ AnyEvent::Open3::Simple::Process - process run using AnyEvent::Open3::Simple
 
 =head1 VERSION
 
-version 0.67
+version 0.68
 
 =head1 DESCRIPTION
 
 This class represents a process being handled by L<AnyEvent::Open3::Simple>.
 
-=head1 METHODS
+=head1 ATTRIBUTES
 
 =head2 $proc-E<gt>pid
 
 Return the Process ID of the child process.
+
+=head1 METHODS
 
 =head2 $proc-E<gt>print( @data )
 

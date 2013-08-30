@@ -10,6 +10,7 @@ README
 dist.ini
 lib/AnyEvent/Open3/Simple.pm
 lib/AnyEvent/Open3/Simple/Process.pm
+t/00.t
 t/create.t
 t/defect_gh1.t
 t/from_package.t

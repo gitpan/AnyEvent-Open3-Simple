@@ -20,12 +20,13 @@ my %WriteMakefileArgs = (
   "LICENSE" => "perl",
   "NAME" => "AnyEvent::Open3::Simple",
   "PREREQ_PM" => {
-    "AnyEvent" => 0
+    "AnyEvent" => 0,
+    "Carp" => 0
   },
   "TEST_REQUIRES" => {
     "Test::More" => 0
   },
-  "VERSION" => "0.68",
+  "VERSION" => "0.69",
   "test" => {
     "TESTS" => "t/*.t"
   }

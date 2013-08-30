@@ -3,9 +3,10 @@ package AnyEvent::Open3::Simple::Process;
 use strict;
 use warnings;
 use v5.10;
+use Carp qw( croak );
 
 # ABSTRACT: process run using AnyEvent::Open3::Simple
-our $VERSION = '0.68'; # VERSION
+our $VERSION = '0.69'; # VERSION
 
 
 sub new
@@ -21,6 +22,8 @@ sub pid { shift->{pid} }
 sub print
 {
   my $stdin = shift->{stdin};
+  croak "AnyEvent::Open3::Simple::Process#print is unsupported on this platform"
+    if $^O eq 'MSWin32';
   print $stdin @_;
 }
 
@@ -48,7 +51,7 @@ AnyEvent::Open3::Simple::Process - process run using AnyEvent::Open3::Simple
 
 =head1 VERSION
 
-version 0.68
+version 0.69
 
 =head1 DESCRIPTION
 
@@ -64,7 +67,8 @@ Return the Process ID of the child process.
 
 =head2 $proc-E<gt>print( @data )
 
-Write to the subprocess' stdin.
+Write to the subprocess' stdin.  This functionality is unsupported on Microsoft
+Windows.
 
 =head2 $proc-E<gt>say( @data )
 

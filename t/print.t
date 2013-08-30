@@ -1,8 +1,8 @@
 use strict;
 use warnings;
-use Test::More;
-
 use v5.10;
+BEGIN { eval q{ use EV } }
+use Test::More;
 use AnyEvent;
 use AnyEvent::Open3::Simple;
 use File::Temp qw( tempdir );
@@ -12,7 +12,7 @@ use File::Spec;
 # isn't at least failing on MSWin32 (it spews some permission
 # errors and then gets stuck), so skip this test.  There
 # are plenty of other tests that will fail on Windows anyway.
-plan skip_all => 'test broken on MSWin32' if $^O eq 'MSWin32';
+plan skip_all => 'print not supported on windows' if $^O eq 'MSWin32';
 plan tests => 3;
 
 my $dir = tempdir( CLEANUP => 1 );

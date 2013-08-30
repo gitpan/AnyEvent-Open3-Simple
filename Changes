@@ -1,5 +1,13 @@
 Revision history for AnyEvent-Open3-Simple
 
+0.69      2013-08-29 21:58:23 -0400
+  - added an alternate idle watcher implementation
+  - added MSWin32 support (via idle watcher)
+  - change end line processing
+    in the past we used chomp() which removed trailing $/
+    but this didn't work nicely with MSWin32, instead we
+    use a regex that removes \r\n, \n or \r
+
 0.68      2013-08-23 08:38:40 -0400
   - documentation tweaks
 

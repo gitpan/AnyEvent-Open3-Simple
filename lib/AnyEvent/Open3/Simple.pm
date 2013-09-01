@@ -2,7 +2,6 @@ package AnyEvent::Open3::Simple;
 
 use strict;
 use warnings;
-use v5.10;
 use AnyEvent;
 use IPC::Open3 qw( open3 );
 use Scalar::Util qw( reftype );
@@ -11,19 +10,20 @@ use AnyEvent::Open3::Simple::Process;
 use Carp qw( croak );
 
 # ABSTRACT: interface to open3 under AnyEvent
-our $VERSION = '0.69'; # VERSION
+our $VERSION = '0.69_01'; # VERSION
 
 
 sub new
 {
-  state $default_handler = sub { };
+  my $default_handler = sub { };
   my $class = shift;
-  my $args = (reftype($_[0]) // '') eq 'HASH' ? shift : { @_ };
+  my $args = (reftype($_[0]) || '') eq 'HASH' ? shift : { @_ };
   my %self;
-  $self{$_} = $args->{$_} // $default_handler for qw( on_stdout on_stderr on_start on_exit on_signal on_fail on_error on_success );
+  $self{$_} = $args->{$_} || $default_handler for qw( on_stdout on_stderr on_start on_exit on_signal on_fail on_error on_success );
   $self{impl} = $args->{implementation} 
-             // $ENV{ANYEVENT_OPEN3_SIMPLE}
-             // ($^O eq 'MSWin32' ? 'idle' : 'child');
+             || $ENV{ANYEVENT_OPEN3_SIMPLE}
+             || ($^O eq 'MSWin32' ? 'idle' : 'child');
+  $self{raw} = $args->{raw} || 0;
   unless($self{impl} =~ /^(idle|child)$/)
   {
     croak "unknown implementation $self{impl}";
@@ -54,23 +54,35 @@ sub run
   my $watcher_stdout = AnyEvent->io(
     fh   => $child_stdout,
     poll => 'r',
-    cb   => sub {
-      my $input = <$child_stdout>;
-      return unless defined $input;
-      $input =~ s/(\015?\012|\015)$//;
-      $self->{on_stdout}->($proc, $input);
-    },
+    cb   => $self->{raw}
+    ? sub {
+        local $/;
+        $self->{on_stdout}->($proc, <$child_stdout>);
+      }
+    : sub {
+        my $input = <$child_stdout>;
+        return unless defined $input;
+        $input =~ s/(\015?\012|\015)$//;
+        $self->{on_stdout}->($proc, $input);
+      }
+    ,
   );
-  
+
   my $watcher_stderr = AnyEvent->io(
     fh   => $child_stderr,
     poll => 'r',
-    cb   => sub {
-      my $input = <$child_stderr>;
-      return unless defined $input;
-      $input =~ s/(\015?\012|\015)$//;
-      $self->{on_stderr}->($proc, $input);
-    },
+    cb   => $self->{raw}
+    ? sub {
+        local $/;
+        $self->{on_stderr}->($proc, <$child_stderr>);
+      }
+    : sub {
+        my $input = <$child_stderr>;
+        return unless defined $input;
+        $input =~ s/(\015?\012|\015)$//;
+        $self->{on_stderr}->($proc, $input);
+      }
+    ,
   );
 
   my $watcher_child;
@@ -86,18 +98,28 @@ sub run
     # cygwin
     while(!eof $child_stdout)
     {
-      my $input = <$child_stdout>;
-      last unless defined $input;
-      $input =~ s/(\015?\012|\015)$//;
-      $self->{on_stdout}->($proc,$input);
+      if($self->{raw})
+      { local $/; $self->{on_stdout}->($proc,<$child_stdout>) }
+      else
+      {
+        my $input = <$child_stdout>;
+        last unless defined $input;
+        $input =~ s/(\015?\012|\015)$//;
+        $self->{on_stdout}->($proc,$input);
+      }
     }
       
     while(!eof $child_stderr)
     {
-      my $input = <$child_stderr>;
-      last unless defined $input;
-      $input =~ s/(\015?\012|\015)$//;
-      $self->{on_stderr}->($proc,$input);
+      if($self->{raw})
+      { local $/; $self->{on_stderr}->($proc,<$child_stderr>) }
+      else
+      {
+        my $input = <$child_stderr>;
+        last unless defined $input;
+        $input =~ s/(\015?\012|\015)$//;
+        $self->{on_stderr}->($proc,$input);
+      }
     }
       
     $self->{on_exit}->($proc, $exit_value, $signal);
@@ -147,7 +169,7 @@ AnyEvent::Open3::Simple - interface to open3 under AnyEvent
 
 =head1 VERSION
 
-version 0.69
+version 0.69_01
 
 =head1 SYNOPSIS
 
@@ -222,6 +244,12 @@ You can change the default by setting the C<ANYEVENT_OPEN3_SIMPLE>
 environment variable, like this:
 
  % export ANYEVENT_OPEN3_SIMPLE=idle
+
+=item * raw
+
+If set to true (false is the default) then output will not be passed
+into the C<on_stdout> and C<on_stderr> callbacks as lines, but instead
+as chunks in whatever order they come.  New lines will not be stripped.
 
 =back
 
@@ -361,7 +389,11 @@ L<AnyEvent::Subprocess>, L<AnyEvent::Util>, L<AnyEvent::Run>.
 
 =head1 AUTHOR
 
-Graham Ollis <plicease@cpan.org>
+author: Graham Ollis <plicease@cpan.org>
+
+contributors:
+
+Stephen R. Scaffidi
 
 =head1 COPYRIGHT AND LICENSE
 

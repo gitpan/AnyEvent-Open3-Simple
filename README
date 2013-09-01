@@ -2,7 +2,7 @@ NAME
     AnyEvent::Open3::Simple - interface to open3 under AnyEvent
 
 VERSION
-    version 0.69
+    version 0.69_01
 
 SYNOPSIS
      use v5.10;
@@ -71,6 +71,13 @@ CONSTRUCTOR
         environment variable, like this:
 
          % export ANYEVENT_OPEN3_SIMPLE=idle
+
+    *   raw
+
+        If set to true (false is the default) then output will not be passed
+        into the "on_stdout" and "on_stderr" callbacks as lines, but instead
+        as chunks in whatever order they come. New lines will not be
+        stripped.
 
   EVENTS
     These events will be triggered by the subprocess when the run method is
@@ -195,7 +202,11 @@ SEE ALSO
     AnyEvent::Subprocess, AnyEvent::Util, AnyEvent::Run.
 
 AUTHOR
-    Graham Ollis <plicease@cpan.org>
+    author: Graham Ollis <plicease@cpan.org>
+
+    contributors:
+
+    Stephen R. Scaffidi
 
 COPYRIGHT AND LICENSE
     This software is copyright (c) 2012 by Graham Ollis.

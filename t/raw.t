@@ -1,34 +1,33 @@
 use strict;
 use warnings;
 BEGIN { eval q{ use EV } }
-use Test::More tests => 5;
+use Test::More tests => 3;
 use File::Temp qw( tempdir );
 use AnyEvent;
 use AnyEvent::Open3::Simple;
 use File::Spec;
 
 my $dir = tempdir( CLEANUP => 1);
+#note "dir = $dir";
 open(my $fh, '>', File::Spec->catfile($dir, 'child.pl'));
 say $fh "#!$^X";
 say $fh '$| = 1;';
 say $fh 'print "message1\n";';
-say $fh 'print "message2\n";';
 say $fh 'print STDERR "message3\n";';
+say $fh 'print STDERR "message4\n";';
+say $fh 'print "message2\n";';
 close $fh;
 
 my $done = AnyEvent->condvar;
 
-my @out;
-my @err;
-my $exit_value;
-my $signal;
-my $proc;
+my $out = '';
+my $err = '';
 
 my $ipc = AnyEvent::Open3::Simple->new(
-  on_stdout => sub { push @out, pop },
-  on_stderr => sub { push @err, pop },
+  raw       => 1,
+  on_stdout => sub { $out .= pop },
+  on_stderr => sub { $err .= pop },
   on_exit   => sub {
-    ($proc, $exit_value, $signal) = @_;
     $done->send;
   },
 );
@@ -44,8 +43,10 @@ isa_ok $ret, 'AnyEvent::Open3::Simple';
 
 $done->recv;
 
-is $out[0], 'message1', 'out[0] = message1';
-is $out[1], 'message2', 'out[1] = message2';
-is $err[0], 'message3', 'err[0] = message3';
+like $out, qr{^message1(\015?\012|\015)message2(\015?\012|\015)$}, "out";
+like $err, qr{^message3(\015?\012|\015)message4(\015?\012|\015)$}, "err";
 
-pass 'Event Loop Is: ' . AnyEvent::detect();
+#note "===out===";
+#note $out;
+#note "===err===";
+#note $err;

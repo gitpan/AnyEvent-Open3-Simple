@@ -22,6 +22,7 @@ t/on_signal.t
 t/on_success.t
 t/print.t
 t/proc.t
+t/raw.t
 t/use.t
 xt/release/build_environment.t
 xt/release/changes.t

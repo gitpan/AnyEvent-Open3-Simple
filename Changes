@@ -1,5 +1,8 @@
 Revision history for AnyEvent-Open3-Simple
 
+0.69_02   2013-09-01 14:25:50 -0400
+  - add prereq EV on MSWin32
+
 0.69_01   2013-08-31 20:28:03 -0400
   - experimental perl 5.8 support
   - added optional raw attribute to constructor

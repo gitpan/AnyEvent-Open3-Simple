@@ -8,6 +8,7 @@ META.yml
 Makefile.PL
 README
 dist.ini
+inc/MakeMaker.pm
 lib/AnyEvent/Open3/Simple.pm
 lib/AnyEvent/Open3/Simple/Process.pm
 t/00.t

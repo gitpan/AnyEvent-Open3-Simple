@@ -6,7 +6,7 @@ build_requires:
   Test::More: 0
 configure_requires:
   ExtUtils::MakeMaker: 6.30
-dynamic_config: 0
+dynamic_config: 1
 generated_by: 'Dist::Zilla version 4.300037, CPAN::Meta::Converter version 2.132140'
 license: perl
 meta-spec:
@@ -21,4 +21,4 @@ resources:
   bugtracker: https://github.com/plicease/anyevent-open3-simple/issues
   homepage: http://perl.wdlabs.com/AnyEvent-Open3-Simple/
   repository: git://github.com/plicease/anyevent-open3-simple.git
-version: 0.69_01
+version: 0.69_02

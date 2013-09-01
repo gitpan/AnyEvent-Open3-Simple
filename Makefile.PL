@@ -26,7 +26,7 @@ my %WriteMakefileArgs = (
   "TEST_REQUIRES" => {
     "Test::More" => 0
   },
-  "VERSION" => "0.69_01",
+  "VERSION" => "0.69_02",
   "test" => {
     "TESTS" => "t/*.t"
   }
@@ -61,6 +61,10 @@ unless ( eval { ExtUtils::MakeMaker->VERSION(6.56) } ) {
 
 delete $WriteMakefileArgs{CONFIGURE_REQUIRES}
   unless eval { ExtUtils::MakeMaker->VERSION(6.52) };
+
+if ( $^O eq 'MSWin32' ) {
+ $WriteMakefileArgs{PREREQ_PM}{'EV'} = '0';
+}
 
 WriteMakefile(%WriteMakefileArgs);
 

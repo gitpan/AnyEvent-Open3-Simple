@@ -21,12 +21,13 @@ my %WriteMakefileArgs = (
   "NAME" => "AnyEvent::Open3::Simple",
   "PREREQ_PM" => {
     "AnyEvent" => 0,
+    "AnyEvent::Handle" => 0,
     "Carp" => 0
   },
   "TEST_REQUIRES" => {
     "Test::More" => 0
   },
-  "VERSION" => "0.70",
+  "VERSION" => "0.71",
   "test" => {
     "TESTS" => "t/*.t"
   }

@@ -15,10 +15,11 @@ meta-spec:
 name: AnyEvent-Open3-Simple
 requires:
   AnyEvent: 0
+  AnyEvent::Handle: 0
   Carp: 0
   perl: 5.008
 resources:
   bugtracker: https://github.com/plicease/anyevent-open3-simple/issues
   homepage: http://perl.wdlabs.com/AnyEvent-Open3-Simple/
   repository: git://github.com/plicease/anyevent-open3-simple.git
-version: 0.70
+version: 0.71

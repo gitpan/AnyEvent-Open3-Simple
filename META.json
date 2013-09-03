@@ -22,6 +22,7 @@
       "runtime" : {
          "requires" : {
             "AnyEvent" : "0",
+            "AnyEvent::Handle" : "0",
             "Carp" : "0",
             "perl" : "5.008"
          }
@@ -44,6 +45,6 @@
          "web" : "https://github.com/plicease/anyevent-open3-simple"
       }
    },
-   "version" : "0.70"
+   "version" : "0.71"
 }
 

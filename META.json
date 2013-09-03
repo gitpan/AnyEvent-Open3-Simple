@@ -32,7 +32,7 @@
          }
       }
    },
-   "release_status" : "testing",
+   "release_status" : "stable",
    "resources" : {
       "bugtracker" : {
          "web" : "https://github.com/plicease/anyevent-open3-simple/issues"
@@ -44,6 +44,6 @@
          "web" : "https://github.com/plicease/anyevent-open3-simple"
       }
    },
-   "version" : "0.69_02"
+   "version" : "0.70"
 }
 

@@ -1,5 +1,8 @@
 Revision history for AnyEvent-Open3-Simple
 
+0.70      2013-09-03 12:39:38 -0400
+  - promote to production
+
 0.69_02   2013-09-01 14:25:50 -0400
   - add prereq EV on MSWin32
 

@@ -10,7 +10,7 @@ use AnyEvent::Open3::Simple::Process;
 use Carp qw( croak );
 
 # ABSTRACT: interface to open3 under AnyEvent
-our $VERSION = '0.71'; # VERSION
+our $VERSION = '0.72'; # VERSION
 
 
 sub new
@@ -95,7 +95,8 @@ sub run
         my $input = <$child_stdout>;
         return unless defined $input;
         $input =~ s/(\015?\012|\015)$//;
-        $self->{on_stdout}->($proc, $input);
+        my $ref = $self->{on_stdout};
+        ref($ref) eq 'ARRAY' ? push @$ref, $input : $ref->($proc, $input);
       },
     );
 
@@ -106,7 +107,8 @@ sub run
         my $input = <$child_stderr>;
         return unless defined $input;
         $input =~ s/(\015?\012|\015)$//;
-        $self->{on_stderr}->($proc, $input);
+        my $ref = $self->{on_stderr};
+        ref($ref) eq 'ARRAY' ? push @$ref, $input : $ref->($proc, $input);
       },
     );
   }
@@ -135,7 +137,8 @@ sub run
         my $input = <$child_stdout>;
         last unless defined $input;
         $input =~ s/(\015?\012|\015)$//;
-        $self->{on_stdout}->($proc,$input);
+        my $ref = $self->{on_stdout};
+        ref($ref) eq 'ARRAY' ? push @$ref, $input : $ref->($proc, $input);
       }
       
       while(!eof $child_stderr)
@@ -143,7 +146,8 @@ sub run
         my $input = <$child_stderr>;
         last unless defined $input;
         $input =~ s/(\015?\012|\015)$//;
-        $self->{on_stderr}->($proc,$input);
+        my $ref = $self->{on_stderr};
+        ref($ref) eq 'ARRAY' ? push @$ref, $input : $ref->($proc, $input);
       }
     }
       
@@ -194,7 +198,7 @@ AnyEvent::Open3::Simple - interface to open3 under AnyEvent
 
 =head1 VERSION
 
-version 0.71
+version 0.72
 
 =head1 SYNOPSIS
 
@@ -271,6 +275,10 @@ environment variable, like this:
  % export ANYEVENT_OPEN3_SIMPLE=idle
 
 =item * raw
+
+B<EXPERIMENTAL>: this doesn't seem to work right on OpenBSD, and until I
+figure it out the interface and implementation for this option may change
+or go away.
 
 If set to true (false is the default) then output will not be passed
 into the C<on_stdout> and C<on_stderr> callbacks as lines, but instead

@@ -22,4 +22,4 @@ resources:
   bugtracker: https://github.com/plicease/anyevent-open3-simple/issues
   homepage: http://perl.wdlabs.com/AnyEvent-Open3-Simple/
   repository: git://github.com/plicease/anyevent-open3-simple.git
-version: 0.71
+version: 0.72

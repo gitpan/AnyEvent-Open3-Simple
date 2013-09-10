@@ -10,7 +10,7 @@ use AnyEvent::Open3::Simple::Process;
 use Carp qw( croak );
 
 # ABSTRACT: interface to open3 under AnyEvent
-our $VERSION = '0.72'; # VERSION
+our $VERSION = '0.73'; # VERSION
 
 
 sub new
@@ -198,7 +198,7 @@ AnyEvent::Open3::Simple - interface to open3 under AnyEvent
 
 =head1 VERSION
 
-version 0.72
+version 0.73
 
 =head1 SYNOPSIS
 

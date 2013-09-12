@@ -10,7 +10,7 @@ use AnyEvent::Open3::Simple::Process;
 use Carp qw( croak );
 
 # ABSTRACT: interface to open3 under AnyEvent
-our $VERSION = '0.73'; # VERSION
+our $VERSION = '0.74'; # VERSION
 
 
 sub new
@@ -198,7 +198,7 @@ AnyEvent::Open3::Simple - interface to open3 under AnyEvent
 
 =head1 VERSION
 
-version 0.73
+version 0.74
 
 =head1 SYNOPSIS
 
@@ -273,16 +273,6 @@ You can change the default by setting the C<ANYEVENT_OPEN3_SIMPLE>
 environment variable, like this:
 
  % export ANYEVENT_OPEN3_SIMPLE=idle
-
-=item * raw
-
-B<EXPERIMENTAL>: this doesn't seem to work right on OpenBSD, and until I
-figure it out the interface and implementation for this option may change
-or go away.
-
-If set to true (false is the default) then output will not be passed
-into the C<on_stdout> and C<on_stderr> callbacks as lines, but instead
-as chunks in whatever order they come.  New lines will not be stripped.
 
 =back
 

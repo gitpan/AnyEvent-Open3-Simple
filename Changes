@@ -1,5 +1,8 @@
 Revision history for AnyEvent-Open3-Simple
 
+0.74      2013-09-12 06:10:50 -0400
+  - skip raw support testing on all platforms
+
 0.73      2013-09-10 14:08:24 -0400
   - perl 5.8 support fixes
 

@@ -5,7 +5,7 @@ use warnings;
 use Carp qw( croak );
 
 # ABSTRACT: process run using AnyEvent::Open3::Simple
-our $VERSION = '0.74'; # VERSION
+our $VERSION = '0.75'; # VERSION
 
 
 sub new
@@ -50,7 +50,7 @@ AnyEvent::Open3::Simple::Process - process run using AnyEvent::Open3::Simple
 
 =head1 VERSION
 
-version 0.74
+version 0.75
 
 =head1 DESCRIPTION
 
@@ -66,13 +66,28 @@ Return the Process ID of the child process.
 
 =head2 $proc-E<gt>print( @data )
 
-Write to the subprocess' stdin.  This functionality is unsupported on Microsoft
-Windows.
+Write to the subprocess' stdin.
+
+Be careful to use either the C<stdin> attribute on the L<AnyEvent::Open::Simple>
+object or this C<print> methods for a given instance of L<AnyEvent::Open3::Simple>,
+but not both!  Otherwise bad things may happen.
+
+Currently on (non cygwin) Windows (Strawberry, ActiveState) this method is not
+supported, so if you need to send (standard) input to the subprocess, use the
+C<stdin> attribute on the L<AnyEvent::Open::Simple> constructor.
 
 =head2 $proc-E<gt>say( @data )
 
 Write to the subprocess' stdin, adding a new line at the end.  This functionality
 is unsupported on Microsoft Windows.
+
+Be careful to use either the C<stdin> attribute on the L<AnyEvent::Open::Simple>
+object or this C<say> methods for a given instance of L<AnyEvent::Open3::Simple>,
+but not both!  Otherwise bad things may happen.
+
+Currently on (non cygwin) Windows (Strawberry, ActiveState) this method is not
+supported, so if you need to send (standard) input to the subprocess, use the
+C<stdin> attribute on the L<AnyEvent::Open::Simple> constructor.
 
 =head2 $proc-E<gt>close
 

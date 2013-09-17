@@ -23,7 +23,7 @@ my %WriteMakefileArgs = (
     "AnyEvent" => 0
   },
   "TEST_REQUIRES" => {},
-  "VERSION" => "0.74",
+  "VERSION" => "0.75",
   "test" => {
     "TESTS" => "t/*.t"
   }

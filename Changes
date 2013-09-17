@@ -1,5 +1,8 @@
 Revision history for AnyEvent-Open3-Simple
 
+0.75      2013-09-17 07:54:01 -0400
+  - add stdin attribute for AnyEvent::Open::Simple
+
 0.74      2013-09-12 06:10:50 -0400
   - skip raw support testing on all platforms
 

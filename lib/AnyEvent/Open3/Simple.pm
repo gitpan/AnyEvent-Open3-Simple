@@ -8,9 +8,10 @@ use Scalar::Util qw( reftype );
 use Symbol qw( gensym );
 use AnyEvent::Open3::Simple::Process;
 use Carp qw( croak );
+use File::Temp ();
 
 # ABSTRACT: interface to open3 under AnyEvent
-our $VERSION = '0.74'; # VERSION
+our $VERSION = '0.75'; # VERSION
 
 
 sub new
@@ -20,6 +21,7 @@ sub new
   my $args = (reftype($_[0]) || '') eq 'HASH' ? shift : { @_ };
   my %self;
   $self{$_} = $args->{$_} || $default_handler for qw( on_stdout on_stderr on_start on_exit on_signal on_fail on_error on_success );
+  $self{stdin} = $args->{stdin};
   $self{impl} = $args->{implementation} 
              || $ENV{ANYEVENT_OPEN3_SIMPLE}
              || ($^O eq 'MSWin32' ? 'idle' : 'child');
@@ -38,6 +40,21 @@ sub run
   
   my($child_stdin, $child_stdout, $child_stderr);
   $child_stderr = gensym;
+
+  local *TEMP;
+  if(defined $self->{stdin})
+  {
+    my $file = File::Temp->new;
+    $file->autoflush(1);
+    $file->print(
+      ref($self->{stdin}) eq 'ARRAY'
+      ? join("\n", @{ $self->{stdin} })
+      : $self->{stdin}
+    );
+    $file->seek(0,0);
+    open TEMP, '<&=', $file;
+    $child_stdin = '<&TEMP';
+  }
   
   my $pid = eval { open3 $child_stdin, $child_stdout, $child_stderr, $program, @arguments };
   
@@ -198,7 +215,7 @@ AnyEvent::Open3::Simple - interface to open3 under AnyEvent
 
 =head1 VERSION
 
-version 0.74
+version 0.75
 
 =head1 SYNOPSIS
 
@@ -273,6 +290,20 @@ You can change the default by setting the C<ANYEVENT_OPEN3_SIMPLE>
 environment variable, like this:
 
  % export ANYEVENT_OPEN3_SIMPLE=idle
+
+=item * stdin
+
+The input to be passed to the program.  This may be specified as a string,
+in which case it will be passed directly to the program unmodified, or a
+list, in which case it will be joined by new lines in whatever format is
+native to your Perl.
+
+Be careful to use either this C<stdin> attribute or the C<print>/C<say> methods
+on the L<AnyEvent::Open3::Simple::Process> object for a given instance of
+L<AnyEvent::Open3::Simple>, but not both!  Otherwise bad things may happen.
+
+Currently on (non cygwin) Windows (Strawberry, ActiveState) this is the only
+way to provide (standard) input to the subprocess.
 
 =back
 

@@ -25,6 +25,8 @@ t/on_success.t
 t/print.t
 t/proc.t
 t/raw.t
+t/stdin_list.t
+t/stdin_str.t
 t/use.t
 xt/release/build_environment.t
 xt/release/changes.t

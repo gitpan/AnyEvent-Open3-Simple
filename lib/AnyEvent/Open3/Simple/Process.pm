@@ -5,7 +5,7 @@ use warnings;
 use Carp qw( croak );
 
 # ABSTRACT: process run using AnyEvent::Open3::Simple
-our $VERSION = '0.75'; # VERSION
+our $VERSION = '0.76'; # VERSION
 
 
 sub new
@@ -44,13 +44,15 @@ __END__
 
 =pod
 
+=encoding UTF-8
+
 =head1 NAME
 
 AnyEvent::Open3::Simple::Process - process run using AnyEvent::Open3::Simple
 
 =head1 VERSION
 
-version 0.75
+version 0.76
 
 =head1 DESCRIPTION
 
@@ -58,13 +60,17 @@ This class represents a process being handled by L<AnyEvent::Open3::Simple>.
 
 =head1 ATTRIBUTES
 
-=head2 $proc-E<gt>pid
+=head2 pid
+
+ my $pid = $proc->pid;
 
 Return the Process ID of the child process.
 
 =head1 METHODS
 
-=head2 $proc-E<gt>print( @data )
+=head2 print
+
+ $proc->print(@data);
 
 Write to the subprocess' stdin.
 
@@ -76,7 +82,9 @@ Currently on (non cygwin) Windows (Strawberry, ActiveState) this method is not
 supported, so if you need to send (standard) input to the subprocess, use the
 C<stdin> attribute on the L<AnyEvent::Open::Simple> constructor.
 
-=head2 $proc-E<gt>say( @data )
+=head2 say
+
+ $proc->say(@data);
 
 Write to the subprocess' stdin, adding a new line at the end.  This functionality
 is unsupported on Microsoft Windows.

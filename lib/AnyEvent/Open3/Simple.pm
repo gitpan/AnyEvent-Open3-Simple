@@ -12,7 +12,7 @@ use Carp qw( croak );
 use File::Temp ();
 
 # ABSTRACT: interface to open3 under AnyEvent
-our $VERSION = '0.76'; # VERSION
+our $VERSION = '0.77'; # VERSION
 
 
 sub new
@@ -68,7 +68,7 @@ sub run
   
   if(my $error = $@)
   {
-    $self->{on_error}->($error);
+    $self->{on_error}->($error, $program, @arguments);
     return;
   }
   
@@ -225,7 +225,7 @@ AnyEvent::Open3::Simple - interface to open3 under AnyEvent
 
 =head1 VERSION
 
-version 0.76
+version 0.77
 
 =head1 SYNOPSIS
 
@@ -237,17 +237,17 @@ version 0.76
  
  my $ipc = AnyEvent::Open3::Simple->new(
    on_start => sub {
-     my $proc = shift; # isa AnyEvent::Open3::Simple::Process
+     my $proc = shift;       # isa AnyEvent::Open3::Simple::Process
      say 'child PID: ', $proc->pid;
    },
    on_stdout => sub { 
-     my $proc = shift; # isa AnyEvent::Open3::Simple::Process
-     my $line = shift; # string
+     my $proc = shift;       # isa AnyEvent::Open3::Simple::Process
+     my $line = shift;       # string
      say 'out: ', $string;
    },
    on_stderr => sub {
-     my $proc = shift; # isa AnyEvent::Open3::Simple::Process
-     my $line = shift; # string
+     my $proc = shift;       # isa AnyEvent::Open3::Simple::Process
+     my $line = shift;       # string
      say 'err: ', $line;
    },
    on_exit   => sub {
@@ -260,6 +260,8 @@ version 0.76
    },
    on_error => sub {
      my $error = shift;      # the exception thrown by IPC::Open3::open3
+     my $program = shift;    # string
+     my @args = @_;          # list of arguments
      warn "error: $error";
      $done->send;
    },
@@ -339,7 +341,7 @@ will be called.
 Called after the process is created, but before the run method returns
 (that is, it does not wait to re-enter the event loop first).
 
-=item * C<on_error> ($error)
+=item * C<on_error> ($error, $program, @arguments)
 
 Called when there is an execution error, for example, if you ask
 to run a program that does not exist.  No process is passed in
@@ -356,6 +358,10 @@ you ask to run a program that doesn't exist.  On Linux and Cygwin,
 this will raise an C<on_error> event, on C<MSWin32> it will
 not trigger a C<on_error> and instead cause a normal exit
 with a exit value of 1.
+
+In versions 0.77 and better, this event also gets the program name
+and arguments passed into the L<run|AnyEvent::Open3::Simple#run>
+method.
 
 =item * C<on_stdout> ($proc, $line)
 
@@ -425,10 +431,10 @@ attribute to force it use an idle watcher instead.  Patches for detecting
 environments where idle watchers should be used are welcome and
 encouraged.
 
-The pure perl implementation that comes with Perl
+The pure perl implementation that comes with L<AnyEvent>
 (L<AnyEvent::Impl::Perl>) does not seem to work with this module
 on Microsoft Windows so I make L<EV> a prereq on that platform 
-(which does work).
+(which is automatically used if installed and does work).
 
 Writing to a subprocesses stdin with L<AnyEvent::Open3::Simple::Process#print>
 or L<AnyEvent::Open3::Simple::Process#say> is unsupported on Microsoft 

@@ -5,13 +5,13 @@ use warnings;
 use Carp qw( croak );
 
 # ABSTRACT: process run using AnyEvent::Open3::Simple
-our $VERSION = '0.76'; # VERSION
+our $VERSION = '0.77'; # VERSION
 
 
 sub new
 {
   my($class, $pid, $stdin) = @_;
-  bless { pid => $pid, stdin => $stdin }, $class;
+  bless { pid => $pid, stdin => $stdin, user => '' }, $class;
 }
 
 
@@ -38,6 +38,14 @@ sub close
   CORE::close(shift->{stdin});
 }
 
+
+sub user
+{
+  my($self, $data) = @_;
+  $self->{user} = $data if defined $data;
+  $self->{user};
+}
+
 1;
 
 __END__
@@ -52,7 +60,7 @@ AnyEvent::Open3::Simple::Process - process run using AnyEvent::Open3::Simple
 
 =head1 VERSION
 
-version 0.76
+version 0.77
 
 =head1 DESCRIPTION
 
@@ -97,9 +105,33 @@ Currently on (non cygwin) Windows (Strawberry, ActiveState) this method is not
 supported, so if you need to send (standard) input to the subprocess, use the
 C<stdin> attribute on the L<AnyEvent::Open::Simple> constructor.
 
-=head2 $proc-E<gt>close
+=head2 close
+
+ $proc->close
 
 Close the subprocess' stdin.
+
+=head2 user
+
+Version 0.77
+
+ $proc->user($user_data);
+ my $user_data = $proc->user;
+
+Get or set user defined data tied to the process object.  Any
+Perl data structure may be used.  Useful for persisting data 
+between callbacks, for example:
+
+ AnyEvent::Open3::Simple->new(
+   on_start => sub {
+     my($proc) = @_;
+     $proc->user({ message => 'hello there' });
+   },
+   on_stdout => sub {
+     my($proc) = @_;
+     say $proc->user->{message};
+   },
+ );
 
 =head1 AUTHOR
 

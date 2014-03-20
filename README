@@ -4,7 +4,7 @@ NAME
 
 VERSION
 
-    version 0.76
+    version 0.77
 
 SYNOPSIS
 
@@ -16,17 +16,17 @@ SYNOPSIS
      
      my $ipc = AnyEvent::Open3::Simple->new(
        on_start => sub {
-         my $proc = shift; # isa AnyEvent::Open3::Simple::Process
+         my $proc = shift;       # isa AnyEvent::Open3::Simple::Process
          say 'child PID: ', $proc->pid;
        },
        on_stdout => sub { 
-         my $proc = shift; # isa AnyEvent::Open3::Simple::Process
-         my $line = shift; # string
+         my $proc = shift;       # isa AnyEvent::Open3::Simple::Process
+         my $line = shift;       # string
          say 'out: ', $string;
        },
        on_stderr => sub {
-         my $proc = shift; # isa AnyEvent::Open3::Simple::Process
-         my $line = shift; # string
+         my $proc = shift;       # isa AnyEvent::Open3::Simple::Process
+         my $line = shift;       # string
          say 'err: ', $line;
        },
        on_exit   => sub {
@@ -39,6 +39,8 @@ SYNOPSIS
        },
        on_error => sub {
          my $error = shift;      # the exception thrown by IPC::Open3::open3
+         my $program = shift;    # string
+         my @args = @_;          # list of arguments
          warn "error: $error";
          $done->send;
        },
@@ -110,7 +112,7 @@ CONSTRUCTOR
       Called after the process is created, but before the run method
       returns (that is, it does not wait to re-enter the event loop first).
 
-      * on_error ($error)
+      * on_error ($error, $program, @arguments)
 
       Called when there is an execution error, for example, if you ask to
       run a program that does not exist. No process is passed in because
@@ -125,6 +127,9 @@ CONSTRUCTOR
       ask to run a program that doesn't exist. On Linux and Cygwin, this
       will raise an on_error event, on MSWin32 it will not trigger a
       on_error and instead cause a normal exit with a exit value of 1.
+
+      In versions 0.77 and better, this event also gets the program name
+      and arguments passed into the run method.
 
       * on_stdout ($proc, $line)
 
@@ -193,10 +198,10 @@ CAVEATS
     detecting environments where idle watchers should be used are welcome
     and encouraged.
 
-    The pure perl implementation that comes with Perl
+    The pure perl implementation that comes with AnyEvent
     (AnyEvent::Impl::Perl) does not seem to work with this module on
-    Microsoft Windows so I make EV a prereq on that platform (which does
-    work).
+    Microsoft Windows so I make EV a prereq on that platform (which is
+    automatically used if installed and does work).
 
     Writing to a subprocesses stdin with
     AnyEvent::Open3::Simple::Process#print or

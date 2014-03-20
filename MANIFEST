@@ -23,6 +23,7 @@ t/on_fail.t
 t/on_out.t
 t/on_out_array.t
 t/on_signal.t
+t/on_start.t
 t/on_success.t
 t/print.t
 t/proc.t

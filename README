@@ -4,7 +4,7 @@ NAME
 
 VERSION
 
-    version 0.77
+    version 0.78
 
 SYNOPSIS
 
@@ -17,6 +17,8 @@ SYNOPSIS
      my $ipc = AnyEvent::Open3::Simple->new(
        on_start => sub {
          my $proc = shift;       # isa AnyEvent::Open3::Simple::Process
+         my $program = shift;    # string
+         my @args = @_;          # list of arguments
          say 'child PID: ', $proc->pid;
        },
        on_stdout => sub { 
@@ -107,10 +109,13 @@ CONSTRUCTOR
     child process. In the very least exactly one of on_start or on_error
     will be called.
 
-      * on_start ($proc)
+      * on_start ($proc, $program, @arguments)
 
       Called after the process is created, but before the run method
       returns (that is, it does not wait to re-enter the event loop first).
+
+      In versions 0.78 and better, this event also gets the program name
+      and arguments passed into the run method.
 
       * on_error ($error, $program, @arguments)
 

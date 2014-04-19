@@ -4,8 +4,8 @@ use strict;
 use warnings;
 use Carp qw( croak );
 
-# ABSTRACT: process run using AnyEvent::Open3::Simple
-our $VERSION = '0.78'; # VERSION
+# ABSTRACT: Process run using AnyEvent::Open3::Simple
+our $VERSION = '0.79'; # VERSION
 
 
 sub new
@@ -56,11 +56,11 @@ __END__
 
 =head1 NAME
 
-AnyEvent::Open3::Simple::Process - process run using AnyEvent::Open3::Simple
+AnyEvent::Open3::Simple::Process - Process run using AnyEvent::Open3::Simple
 
 =head1 VERSION
 
-version 0.78
+version 0.79
 
 =head1 DESCRIPTION
 

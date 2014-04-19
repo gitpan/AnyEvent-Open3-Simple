@@ -1,5 +1,9 @@
 Revision history for AnyEvent-Open3-Simple
 
+0.79      2014-04-19 08:25:02 -0400
+  - migrate from MakeMaker to Module::Build
+  - documentation tweaks
+
 0.78      2014-03-20 18:15:47 -0400
   - on_start event now gets program and arguments passed to the run method
 

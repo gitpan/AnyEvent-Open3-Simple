@@ -11,8 +11,8 @@ use AnyEvent::Open3::Simple::Process;
 use Carp qw( croak );
 use File::Temp ();
 
-# ABSTRACT: interface to open3 under AnyEvent
-our $VERSION = '0.78'; # VERSION
+# ABSTRACT: Interface to open3 under AnyEvent
+our $VERSION = '0.79'; # VERSION
 
 
 sub new
@@ -141,7 +141,8 @@ sub run
   my $watcher_child;
 
   my $end_cb = sub {
-    my($pid, $status) = @_;
+    #my($pid, $status) = @_;
+    my $status = $_[1];
     my($exit_value, $signal) = ($status >> 8, $status & 127);
       
     $proc->close;
@@ -221,11 +222,11 @@ __END__
 
 =head1 NAME
 
-AnyEvent::Open3::Simple - interface to open3 under AnyEvent
+AnyEvent::Open3::Simple - Interface to open3 under AnyEvent
 
 =head1 VERSION
 
-version 0.78
+version 0.79
 
 =head1 SYNOPSIS
 

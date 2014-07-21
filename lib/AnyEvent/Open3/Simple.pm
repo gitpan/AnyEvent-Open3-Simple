@@ -12,7 +12,7 @@ use Carp qw( croak );
 use File::Temp ();
 
 # ABSTRACT: Interface to open3 under AnyEvent
-our $VERSION = '0.79'; # VERSION
+our $VERSION = '0.79_02'; # VERSION
 
 
 sub new
@@ -40,6 +40,8 @@ sub run
 {
   croak "run method requires at least one argument"
     unless @_ >= 2;
+
+  my $proc_user = (ref $_[-1] eq 'CODE' ? pop : sub {});
 
   my $stdin = $_[0]->{stdin};
   $stdin = pop if ref $_[-1];
@@ -73,7 +75,8 @@ sub run
   }
   
   my $proc = AnyEvent::Open3::Simple::Process->new($pid, $child_stdin);
-  
+  $proc_user->($proc);
+
   $self->{on_start}->($proc, $program, @arguments);
 
   my $watcher_stdout;
@@ -226,7 +229,7 @@ AnyEvent::Open3::Simple - Interface to open3 under AnyEvent
 
 =head1 VERSION
 
-version 0.79
+version 0.79_02
 
 =head1 SYNOPSIS
 
@@ -402,8 +405,10 @@ Called when the process returns a non-zero exit value.
 =head2 run
 
  $ipc->run($program, @arguments);
- $ipc->run($program, @arguments, \$stdin);
- $ipc->run($program, @arguments, \@stdin);
+ $ipc->run($program, @arguments, \$stdin);             # (version 0.76)
+ $ipc->run($program, @arguments, \@stdin);             # (version 0.76)
+ $ipc->run($program, @arguments, sub {...});           # (version 0.80)
+ $ipc->run($program, @arguments, \$stdin, sub {...});  # (version 0.80)
 
 Start the given program with the given arguments.  Returns
 immediately.  Any events that have been specified in the
@@ -411,7 +416,8 @@ constructor (except for C<on_start>) will not be called until
 the process re-enters the event loop.
 
 You may optionally provide the full content of standard input
-as a string reference or list reference as the last argument.
+as a string reference or list reference as the last argument
+(or second to last if you are providing a callback below).
 If provided as a list reference, it will be joined by new lines
 in whatever format is native to your Perl.  Currently on 
 (non cygwin) Windows (Strawberry, ActiveState) this is the only
@@ -420,6 +426,21 @@ way to provide standard input to the subprocess.
 Do not mix the use of passing standard input to L<run|AnyEvent::Open3::Simple#run>
 and L<AnyEvent::Open3::Simple::Process#print> or L<AnyEvent::Open3::Simple::Process#say>,
 otherwise bad things may happen.
+
+In version 0.80 or better, you may provide a callback as the last argument
+which is called before C<on_start>, and takes the process object as its only 
+argument.  For example:
+
+ foreach my $i (1..10)
+ {
+   $ipc->run($prog, @args, \$stdin, sub {
+     my($proc) = @_;
+     $proc->user({ iteration => $i });
+   });
+ }
+
+This is useful for making data accessible to C<$ipc> object's callbacks that may
+be out of scope otherwise.
 
 =head1 CAVEATS
 
@@ -493,6 +514,8 @@ author: Graham Ollis <plicease@cpan.org>
 contributors:
 
 Stephen R. Scaffidi
+
+Scott Wiersdorf
 
 =head1 COPYRIGHT AND LICENSE
 

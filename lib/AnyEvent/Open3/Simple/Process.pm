@@ -2,10 +2,9 @@ package AnyEvent::Open3::Simple::Process;
 
 use strict;
 use warnings;
-use Carp qw( croak );
 
 # ABSTRACT: Process run using AnyEvent::Open3::Simple
-our $VERSION = '0.79'; # VERSION
+our $VERSION = '0.79_02'; # VERSION
 
 
 sub new
@@ -18,18 +17,22 @@ sub new
 sub pid { shift->{pid} }
 
 
-sub print
+if($^O eq 'MSWin32')
 {
-  my $stdin = shift->{stdin};
-  croak "AnyEvent::Open3::Simple::Process#print is unsupported on this platform"
-    if $^O eq 'MSWin32';
-  print $stdin @_;
+  require Carp;
+  *print = sub { Carp::croak("AnyEvent::Open3::Simple::Process#print is unsupported on this platform") };
+  *say = sub { Carp::croak("AnyEvent::Open3::Simple::Process#say is unsupported on this platform") };
 }
-
-
-sub say
+else
 {
-  shift->print(@_, "\n");
+  *print = sub {
+    my $stdin = shift->{stdin};
+    print $stdin @_;
+  };
+  *say = sub {
+    my $stdin = shift->{stdin};
+    print $stdin @_, "\n";
+  };
 }
 
 
@@ -60,7 +63,7 @@ AnyEvent::Open3::Simple::Process - Process run using AnyEvent::Open3::Simple
 
 =head1 VERSION
 
-version 0.79
+version 0.79_02
 
 =head1 DESCRIPTION
 
@@ -140,6 +143,8 @@ author: Graham Ollis <plicease@cpan.org>
 contributors:
 
 Stephen R. Scaffidi
+
+Scott Wiersdorf
 
 =head1 COPYRIGHT AND LICENSE
 

@@ -1,5 +1,12 @@
 Revision history for AnyEvent-Open3-Simple
 
+0.79_02   2014-07-19 11:44:10 -0400
+  - identical release new version
+
+0.79_01   2014-07-18 11:05:26 -0400
+  - added optional callback to run method to allow per-execute callback to
+    be called just before on_start.
+
 0.79      2014-04-19 08:25:02 -0400
   - migrate from MakeMaker to Module::Build
   - documentation tweaks

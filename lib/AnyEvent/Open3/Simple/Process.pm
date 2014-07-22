@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 # ABSTRACT: Process run using AnyEvent::Open3::Simple
-our $VERSION = '0.79_02'; # VERSION
+our $VERSION = '0.80'; # VERSION
 
 
 sub new
@@ -63,7 +63,7 @@ AnyEvent::Open3::Simple::Process - Process run using AnyEvent::Open3::Simple
 
 =head1 VERSION
 
-version 0.79_02
+version 0.80
 
 =head1 DESCRIPTION
 

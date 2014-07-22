@@ -12,7 +12,7 @@ use Carp qw( croak );
 use File::Temp ();
 
 # ABSTRACT: Interface to open3 under AnyEvent
-our $VERSION = '0.79_02'; # VERSION
+our $VERSION = '0.80'; # VERSION
 
 
 sub new
@@ -229,7 +229,7 @@ AnyEvent::Open3::Simple - Interface to open3 under AnyEvent
 
 =head1 VERSION
 
-version 0.79_02
+version 0.80
 
 =head1 SYNOPSIS
 

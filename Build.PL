@@ -18,7 +18,7 @@ my %module_build_args = (
     "Graham Ollis <plicease\@cpan.org>"
   ],
   "dist_name" => "AnyEvent-Open3-Simple",
-  "dist_version" => "0.79_02",
+  "dist_version" => "0.80",
   "license" => "perl",
   "module_name" => "AnyEvent::Open3::Simple",
   "recommends" => {

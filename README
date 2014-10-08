@@ -4,7 +4,7 @@ NAME
 
 VERSION
 
-    version 0.80
+    version 0.81
 
 SYNOPSIS
 
@@ -171,6 +171,7 @@ METHODS
      $ipc->run($program, @arguments, \@stdin);             # (version 0.76)
      $ipc->run($program, @arguments, sub {...});           # (version 0.80)
      $ipc->run($program, @arguments, \$stdin, sub {...});  # (version 0.80)
+     $ipc->run($program, @arguments, \@stdin, sub {...});  # (version 0.80)
 
     Start the given program with the given arguments. Returns immediately.
     Any events that have been specified in the constructor (except for
@@ -225,6 +226,16 @@ CAVEATS
     (AnyEvent::Impl::Perl) does not seem to work with this module on
     Microsoft Windows so I make EV a prereq on that platform (which is
     automatically used if installed and does work).
+
+    Starting with Strawberry Perl 5.20, the idle watcher implementation in
+    combination with EV stopped working. If you see an error like this:
+
+     (libev) select: Unknown error
+
+    Then you are seeing this issue. You can instead use the Event back end,
+    which does seem to work, though I get a warning when I use that:
+
+     select got errno 128 at ...AnyEvent.pm line 1992.
 
     Writing to a subprocesses stdin with
     AnyEvent::Open3::Simple::Process#print or

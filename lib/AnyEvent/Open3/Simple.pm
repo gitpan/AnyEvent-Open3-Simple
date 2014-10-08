@@ -12,7 +12,7 @@ use Carp qw( croak );
 use File::Temp ();
 
 # ABSTRACT: Interface to open3 under AnyEvent
-our $VERSION = '0.80'; # VERSION
+our $VERSION = '0.81'; # VERSION
 
 
 sub new
@@ -197,10 +197,7 @@ sub run
         use POSIX ":sys_wait_h";
         waitpid($pid, WNOHANG);
       };
-      # shouldn't be throwing an exception
-      # inside a callback, but then it 
-      # this should always work (?)
-      die $@ if $@;
+      warn "IMPORTANT waitpid failed: $@" if $@;
       $end_cb->($kid, $?) if $kid == $pid;
     });
   }
@@ -229,7 +226,7 @@ AnyEvent::Open3::Simple - Interface to open3 under AnyEvent
 
 =head1 VERSION
 
-version 0.80
+version 0.81
 
 =head1 SYNOPSIS
 
@@ -409,6 +406,7 @@ Called when the process returns a non-zero exit value.
  $ipc->run($program, @arguments, \@stdin);             # (version 0.76)
  $ipc->run($program, @arguments, sub {...});           # (version 0.80)
  $ipc->run($program, @arguments, \$stdin, sub {...});  # (version 0.80)
+ $ipc->run($program, @arguments, \@stdin, sub {...});  # (version 0.80)
 
 Start the given program with the given arguments.  Returns
 immediately.  Any events that have been specified in the
@@ -463,6 +461,17 @@ The pure perl implementation that comes with L<AnyEvent>
 (L<AnyEvent::Impl::Perl>) does not seem to work with this module
 on Microsoft Windows so I make L<EV> a prereq on that platform 
 (which is automatically used if installed and does work).
+
+Starting with Strawberry Perl 5.20, the idle watcher implementation
+in combination with L<EV> stopped working.  If you see an error like
+this:
+
+ (libev) select: Unknown error
+
+Then you are seeing this issue.  You can instead use the L<Event> back
+end, which does seem to work, though I get a warning when I use that:
+
+ select got errno 128 at ...AnyEvent.pm line 1992.
 
 Writing to a subprocesses stdin with L<AnyEvent::Open3::Simple::Process#print>
 or L<AnyEvent::Open3::Simple::Process#say> is unsupported on Microsoft 
